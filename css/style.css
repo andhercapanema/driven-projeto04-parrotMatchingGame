@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #EEF9BF;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  max-width: 1023px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1 {
+  color: #75B79E;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 66px;
+  letter-spacing: -0.004em;
+  margin-bottom: 13px;
+}
+
+.c-matchingGame {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.c-card {
+  background-color: #A7E9AF;
+  border: 1px solid #99cea8;
+  border-radius: 5px;
+  width: 117px;
+  height: 146px;
+  margin-top: 34px;
+}/*# sourceMappingURL=style.css.map */
