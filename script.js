@@ -29,12 +29,17 @@ const oneOfEachCard = [
     </button>`
 ]
 
+let numberOfCards = 0;
+
+const shuffle = function () {
+    return Math.random() - 0.5;
+}
+
 const startGame = function () {
     // registrar número de cartas que o jogador quer
-    let numberOfCards = 0;
     while (numberOfCards % 2 === 1 || numberOfCards < 4 || numberOfCards > 14) {
-        numberOfCards = prompt(`Com quantas cartas você quer jogar?
-Insira um número par de 4 a 14!`);
+        numberOfCards = Number(prompt(`Com quantas cartas você quer jogar?
+Insira um número par de 4 a 14!`));
     }
 
     // distribuir as cartas em no mínimo duas linhas iguais
@@ -61,52 +66,58 @@ Insira um número par de 4 a 14!`);
     })
 }
 
-const shuffle = function () {
-    return Math.random() - 0.5;
-}
-
-let firstCard = '';
-let secondCard = '';
-
-const turnCard = function(card) {
-    card.classList.toggle('is-flipped');
-
-    if(firstCard === ''){
-        firstCard = card.classList[0];
-        lockCard(card);
-        console.log('passou no if first');
-    }else if(secondCard === ''){
-        secondCard = card.classList[0];
-        
-        setTimeout(checkCards, 900);
-        console.log('passou no if second');
-    }
-}
-
-const lockCard = function(card) {
+const lockCard = function (card) {
     card.removeAttribute('onclick');
 }
 
-const unlockCard = function(card) {
+const unlockCard = function (card) {
     card.setAttribute('onclick', 'turnCard(this)');
 }
 
-const checkCards = function() {
+const checkEndGame = function () {
+    const turnedCards = document.querySelectorAll('.is-flipped');
+
+    if (turnedCards.length === numberOfCards) {
+        alert(`Você ganhou em ${moves} jogadas!`);
+    }
+}
+
+const checkCards = function () {
     const firstCardElement = document.querySelector(`.${firstCard}.is-flipped`);
     const secondCardElement = document.querySelector(`.${secondCard}.is-flipped`);
-    
-    if(firstCard !== secondCard){
+
+    if (firstCard !== secondCard) {
         firstCardElement.classList.remove('is-flipped');
         secondCardElement.classList.remove('is-flipped');
 
         unlockCard(firstCardElement);
-    }else{
+
+    } else {
         lockCard(secondCardElement);
+        checkEndGame();
     }
 
     firstCard = '';
-    secondCard = ''; 
+    secondCard = '';
 }
 
+let firstCard = '';
+let secondCard = '';
+let moves = 0;
+
+const turnCard = function (card) {
+    card.classList.toggle('is-flipped');
+
+    if (firstCard === '') {
+        firstCard = card.classList[0];
+        lockCard(card);
+    } else if (secondCard === '') {
+        secondCard = card.classList[0];
+
+        setTimeout(checkCards, 1000);
+    }
+
+    moves++;
+}
 
 startGame();
