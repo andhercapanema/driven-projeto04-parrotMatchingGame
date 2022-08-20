@@ -7,8 +7,18 @@ body {
   background-color: #EEF9BF;
   font-family: "Roboto", sans-serif;
   text-align: center;
-  max-width: 1023px;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+:root {
+  --cContentMaxWidth: 1057px;
+}
+
+.c-content {
+  max-width: var(--cContentMaxWidth);
+  margin: 0 50px 0 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,12 +32,14 @@ h1 {
   line-height: 66px;
   letter-spacing: -0.004em;
   margin-bottom: 13px;
+  width: 100%;
 }
 
 .c-matchingGame {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  perspective: 1000px;
 }
 
 .c-card {
@@ -37,4 +49,34 @@ h1 {
   width: 117px;
   height: 146px;
   margin-top: 34px;
+  margin-left: 34px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transform: scale(1);
+  transform-style: preserve-3d;
+  transition: all 900ms;
+}
+
+.c-card:active {
+  transform: scale(0.97);
+  transition: all 300ms;
+}
+
+.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.c-card__front {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+
+.c-card__back {
+  height: 100px;
+  backface-visibility: hidden;
 }/*# sourceMappingURL=style.css.map */
