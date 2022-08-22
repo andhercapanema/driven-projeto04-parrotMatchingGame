@@ -149,8 +149,6 @@ const oneOfEachCard = [
     </button>`
 ]
 
-let numberOfCards = 0;
-
 const shuffle = function () {
     return Math.random() - 0.5;
 }
@@ -163,18 +161,48 @@ const countOneHundredthSec = function () {
     sec = dec / 100;
     const convertedSec = sec % 60;
     min = sec / 60;
-
+    
     displayedCounter.innerHTML = `${("00" + Math.floor(min).toFixed(0)).slice(-2)}:${("00" + Math.floor(convertedSec).toFixed(0)).slice(-2)}:${("00" + Math.floor(dec).toFixed(0)).slice(-2)}`;
 }
 
+let numberOfCards = 0;
 let counterId = "";
 const game = document.querySelector('.c-matchingGame');
 
 const startGame = function () {
+    // resetar variáveis no caso de restartGame
+    numberOfCards = 0;
+    game.innerHTML = '';
+    min = 0, sec = 0, dec = 0;
+    firstCard = '', secondCard = '', moves = 0;
+    displayedCounter.innerHTML = '00:00:00';
+    
     // registrar número de cartas que o jogador quer
     while (numberOfCards % 2 === 1 || numberOfCards < 4 || numberOfCards > 40) {
         numberOfCards = Number(prompt(`Com quantas cartas você quer jogar?
 Insira um número par de 4 a 40!`));
+    }
+
+    // registrar o nível de dificuldade do jogo
+    let difficulty = '';
+    while (difficulty !== 'f' && difficulty !== 'm' && difficulty !== 'd') {
+        difficulty = prompt(`Quer jogar em qual dificuldade?
+Insira "f" para fácil, "m" para médio ou "d" para difícil!`);
+    }
+
+    let flippedTime = 0;
+    switch(difficulty){
+        case 'd':
+            flippedTime = 1500;
+            break;
+        case 'm':
+            flippedTime = 3000;
+            break;
+        case 'f':
+            flippedTime = 4500;
+            break;
+        default:
+            startGame();
     }
 
     // distribuir as cartas em no mínimo duas linhas iguais
@@ -201,6 +229,7 @@ Insira um número par de 4 a 40!`));
 
     // virar todas as cartas no início e iniciar contador
     allCards = document.querySelectorAll('.c-card');
+
     setTimeout(() => {
         allCards.forEach(card => {
             card.classList.toggle('is-flipped');
@@ -212,10 +241,10 @@ Insira um número par de 4 a 40!`));
             });
 
             //iniciar contador
-            setTimeout(()=>{
+            setTimeout(() => {
                 counterId = setInterval(countOneHundredthSec, 10);
             }, 900);
-        }, 1500);
+        }, flippedTime);
     }, 400);
     allCards = Array.from(allCards);
 }
@@ -244,11 +273,6 @@ Seu tempo foi de ${displayedCounter.innerHTML.slice(0, 2)} ${(oneOrMoreMinute)} 
             playAgain = prompt(`Gostaria de jogar novamente?
 Insira "sim" ou "não"`)
             if (playAgain === 'sim') {
-                numberOfCards = 0;
-                game.innerHTML = '';
-                min = 0, sec = 0, dec = 0;
-                firstCard = '', secondCard = '', moves = 0;
-                displayedCounter.innerHTML = '00:00:00';
                 startGame();
             }
         }
