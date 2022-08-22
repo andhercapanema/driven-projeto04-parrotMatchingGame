@@ -10,6 +10,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #75B79E;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 66px;
+  letter-spacing: -0.004em;
 }
 
 :root {
@@ -18,21 +23,22 @@ body {
 
 .c-content {
   max-width: var(--cContentMaxWidth);
-  margin: 0 50px 0 16px;
+  margin: auto 50px auto 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   height: 100vh;
 }
 
+.c-counter {
+  font-size: 28px;
+  align-self: flex-end;
+}
+
 h1 {
-  color: #75B79E;
-  font-weight: 700;
-  font-size: 56px;
-  line-height: 66px;
-  letter-spacing: -0.004em;
   margin-bottom: 13px;
-  width: 100%;
+  margin-left: 34px;
 }
 
 .c-matchingGame {
@@ -79,4 +85,9 @@ h1 {
 .c-card__back {
   height: 100px;
   backface-visibility: hidden;
+}
+
+footer {
+  font-size: 28px;
+  opacity: 0;
 }/*# sourceMappingURL=style.css.map */

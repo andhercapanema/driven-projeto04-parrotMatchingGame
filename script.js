@@ -35,6 +35,21 @@ const shuffle = function () {
     return Math.random() - 0.5;
 }
 
+let min = 0, sec = 0, dec = 0;
+const displayedCounter = document.querySelector('.c-counter');
+
+const countOneHundredthSec = function () {
+    dec++;
+    sec = dec / 100;
+    const convertedSec = sec % 60;
+    min = sec / 60;
+
+    displayedCounter.innerHTML = `${("00" + Math.floor(min).toFixed(0)).slice(-2)}:${("00" + Math.floor(convertedSec).toFixed(0)).slice(-2)}:${("00" + Math.floor(dec).toFixed(0)).slice(-2)}`;
+}
+
+let counterId = "";
+const game = document.querySelector('.c-matchingGame');
+
 const startGame = function () {
     // registrar número de cartas que o jogador quer
     while (numberOfCards % 2 === 1 || numberOfCards < 4 || numberOfCards > 14) {
@@ -60,10 +75,15 @@ Insira um número par de 4 a 14!`));
     // console.log(rightAmountOfCards);
 
     // colocar cartas no html
-    const game = document.querySelector('.c-matchingGame');
     rightAmountOfCards.forEach(card => {
         game.innerHTML += card;
     })
+
+    //iniciar contador
+    counterId = setInterval(countOneHundredthSec, 10);
+
+    // selecionar todas as cartas
+    allCards = Array.from(document.querySelectorAll('.c-card'));
 }
 
 const lockCard = function (card) {
@@ -78,7 +98,23 @@ const checkEndGame = function () {
     const turnedCards = document.querySelectorAll('.is-flipped');
 
     if (turnedCards.length === numberOfCards) {
-        alert(`Você ganhou em ${moves} jogadas!`);
+        clearInterval(counterId);
+
+        alert(`Você ganhou em ${moves} jogadas!
+Seu tempo foi de ${displayedCounter.innerHTML.slice(0, 2)} minutos e ${displayedCounter.innerHTML.slice(3, 5)},${displayedCounter.innerHTML.slice(6, 8)} segundos!`);
+
+        let playAgain = "";
+        while (playAgain !== 'sim' && playAgain !== 'não') {
+            playAgain = prompt(`Gostaria de jogar novamente?
+Insira "sim" ou "não"`)
+            if (playAgain === 'sim') {
+                numberOfCards = 0;
+                game.innerHTML = '';
+                min = 0, sec = 0, dec = 0;
+                firstCard = '', secondCard = '', moves = 0;
+                startGame();
+            }
+        }
     }
 }
 
@@ -91,9 +127,8 @@ const checkCards = function () {
         secondCardElement.classList.remove('is-flipped');
 
         unlockCard(firstCardElement);
-
+        unlockCard(secondCardElement);
     } else {
-        lockCard(secondCardElement);
         checkEndGame();
     }
 
@@ -105,6 +140,33 @@ let firstCard = '';
 let secondCard = '';
 let moves = 0;
 
+let allCards = [];
+
+const lockBoard = function () {
+    allCards.forEach(card => {
+        lockCard(card);
+    })
+}
+
+let flippedCards;
+
+const unlockBoard = function () {
+    flippedCards = Array.from(document.querySelectorAll('.is-flipped'));
+    const unflippedCards = allCards;
+
+    allCards.forEach(card => {
+        flippedCards.forEach(flipped => {
+            if(card === flipped){
+                unflippedCards.splice(unflippedCards.indexOf(flipped), 1);
+            }
+        })
+    })
+
+    unflippedCards.forEach(card => {
+        unlockCard(card);
+    })
+}
+
 const turnCard = function (card) {
     card.classList.toggle('is-flipped');
 
@@ -113,8 +175,11 @@ const turnCard = function (card) {
         lockCard(card);
     } else if (secondCard === '') {
         secondCard = card.classList[0];
+        lockCard(card);
 
+        lockBoard();
         setTimeout(checkCards, 1000);
+        setTimeout(unlockBoard, 1000);
     }
 
     moves++;
