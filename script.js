@@ -79,11 +79,25 @@ Insira um número par de 4 a 14!`));
         game.innerHTML += card;
     })
 
-    //iniciar contador
-    counterId = setInterval(countOneHundredthSec, 10);
+    // virar todas as cartas no início e iniciar contador
+    allCards = document.querySelectorAll('.c-card');
+    setTimeout(() => {
+        allCards.forEach(card => {
+            card.classList.toggle('is-flipped');
+        });
 
-    // selecionar todas as cartas
-    allCards = Array.from(document.querySelectorAll('.c-card'));
+        setTimeout(() => {
+            allCards.forEach(card => {
+                card.classList.toggle('is-flipped');
+            });
+
+            //iniciar contador
+            setTimeout(()=>{
+                counterId = setInterval(countOneHundredthSec, 10);
+            }, 900);
+        }, 1500);
+    }, 400);
+    allCards = Array.from(allCards);
 }
 
 const lockCard = function (card) {
@@ -112,6 +126,7 @@ Insira "sim" ou "não"`)
                 game.innerHTML = '';
                 min = 0, sec = 0, dec = 0;
                 firstCard = '', secondCard = '', moves = 0;
+                displayedCounter.innerHTML = '00:00:00';
                 startGame();
             }
         }
@@ -156,7 +171,7 @@ const unlockBoard = function () {
 
     allCards.forEach(card => {
         flippedCards.forEach(flipped => {
-            if(card === flipped){
+            if (card === flipped) {
                 unflippedCards.splice(unflippedCards.indexOf(flipped), 1);
             }
         })
